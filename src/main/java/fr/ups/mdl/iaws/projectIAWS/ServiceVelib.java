@@ -21,15 +21,18 @@ public class ServiceVelib {
 	private String cleJCDecaux="039a8fcb1cfb47bcaa20e9ed00f0f07f64bff95e";
 	private static final String API_URI =  "https://api.jcdecaux.com/vls/v1/stations?contract=Toulouse&apiKey=039a8fcb1cfb47bcaa20e9ed00f0f07f64bff95e";
 	public void stationNonVide(String adresse){
+		String requeteOSM="http://nominatim.openstreetmap.org/search.php?q="+adresse+"&countrycodes=fr&limit=1&format=json";
 		Client client = ClientBuilder.newClient();
 		WebTarget target = client.target(API_URI);
 		try {
 			JsonArray result = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class);
 			JsonArray closer;
+			int lat, lng;
 			for(int i=0;i<result.size();i++){
 				JsonObject ite=result.getJsonObject(i);
-				ite.getString("lat");
-				ite.getString("lng");
+
+				lat=ite.getInt("lat");
+				lng=ite.getInt("lng");
 				
 			}
 		
