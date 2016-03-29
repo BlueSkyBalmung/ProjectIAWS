@@ -1,0 +1,4 @@
+<RisqueChaussee xmlns="http://risqueChausse/ws" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://risqueChausse/ws RisqueChaussee.xsd">
+	<risque>0.5</risque>
+</RisqueChaussee>

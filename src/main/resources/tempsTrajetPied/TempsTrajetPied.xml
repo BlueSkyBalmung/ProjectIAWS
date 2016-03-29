@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TempsTrajetPied xmlns="http://tempsTrajetPied/ws" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://tempsTrajetPied/ws ReleveNotes.xsd">
+	<tempsTrajet>1</tempsTrajet>
+</TempsTrajetPied>

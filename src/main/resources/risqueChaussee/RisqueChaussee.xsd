@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://risqueChausse/ws" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:element name="RisqueChaussee" type="exem:RisqueChausseeType" xmlns:exem="http://risqueChausse/ws"/>
+
+    <xs:complexType name="RisqueChausseeType">
+        <xs:all>
+            <xs:element type="xs:float" name="risque"/>
+        </xs:all>
+    </xs:complexType>
+
+	<xs:element name="RisqueChausseeRequest" type="exem:RisqueChausseeRequestType" xmlns:exem="http://risqueChausse/ws"/>
+
+    <xs:complexType name="RisqueChausseeRequestType">
+        <xs:all>
+            <xs:element type="xs:string" name="adresse"/>
+        </xs:all>
+    </xs:complexType>
+</xs:schema>

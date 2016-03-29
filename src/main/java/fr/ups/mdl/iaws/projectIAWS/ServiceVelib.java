@@ -8,6 +8,8 @@ import javax.ws.rs.core.Response;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
+import java.util.HashMap;
+
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
@@ -26,9 +28,9 @@ import javax.ws.rs.core.MultivaluedHashMap;
  *
  */
 public class ServiceVelib {
-	private String cleJCDecaux="039a8fcb1cfb47bcaa20e9ed00f0f07f64bff95e";
-	private static final String API_URI =  "https://api.jcdecaux.com/vls/v1/stations?contract=Toulouse&apiKey=039a8fcb1cfb47bcaa20e9ed00f0f07f64bff95e";
-	public void stationNonVide(String adresse){
+	private static String cleJCDecaux="039a8fcb1cfb47bcaa20e9ed00f0f07f64bff95e";
+	private static final String API_URI =  "https://api.jcdecaux.com/vls/v1/stations?contract=Toulouse&apiKey="+cleJCDecaux;
+	public HashMap<String,Integer> stationNonVide(String adresse){
 		//JCDECAUX
 		Client clientJCDecaux = ClientBuilder.newClient();
 		WebTarget targetJCDecaux = clientJCDecaux.target(API_URI);
@@ -73,7 +75,7 @@ public class ServiceVelib {
 			System.err.println("Réponse HTTP " + e.getResponse().getStatus());
 		}
 		
-
+		return new HashMap<String,Integer>();
 	}
 	public void stationNonComplete(String adresse){
 		
