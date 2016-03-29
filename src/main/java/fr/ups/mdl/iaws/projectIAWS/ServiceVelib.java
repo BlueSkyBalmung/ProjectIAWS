@@ -51,13 +51,13 @@ public class ServiceVelib {
 			WebTarget targetJCDecaux = clientJCDecaux.target(API_URI);
 		
 			List<Float> l=accessOSM(adresse);
-			
+			String polylines="[["+"],[";
 		
 			//ARCGIS
 			//ex ArcGis request :
 			//http://sampleserver6.arcgisonline.com/ArcGIS/rest/services/Utilities/Geometry/GeometryServer/lengths?sr=4269&polylines=[{"paths":[[[-117,34],[-116,34],[-117,33]],[[-115,44],[-114,43],[-115,43]]]},{"paths":[[[32.49,17.83],[31.96,17.59],[30.87,17.01],[30.11,16.86]]]}]&lengthUnit=9036&calculationType=preserveShape
 			Client clientaArcGIS = ClientBuilder.newClient();
-			WebTarget arcGIStarget = clientaArcGIS.target("http://sampleserver6.arcgisonline.com/ArcGIS/rest/services/Utilities/Geometry/GeometryServer/lengths");
+			WebTarget arcGIStarget = clientaArcGIS.register(JsonContentTypeResponseFilter.class).target("http://sampleserver6.arcgisonline.com/ArcGIS/rest/services/Utilities/Geometry/GeometryServer/lengths");
 			MultivaluedMap<String, String> formData = new MultivaluedHashMap<String, String>();
 			formData.add("sr", "4269");
 	
@@ -79,9 +79,34 @@ public class ServiceVelib {
 			
 		    formData.add("lengthUnit", "9036");
 		    formData.add("calculationType", "preserveShape");
-		    Response response = arcGIStarget.request().post(Entity.form(formData));
-		
-			//String pageName = obj.getJsonObject();
+		    JsonObject responseArcGIS = arcGIStarget.request(MediaType.APPLICATION_JSON).post(Entity.form(formData),JsonObject.class);
+		    Float[][] answer=new Float[3][2];
+		    String[] parts = responseArcGIS.getString("lengths").replace("[", "").replace("]","").split(",");
+		    float[] resp = new float[parts.length];
+		    for (int i = 0; i < parts.length; ++i) {
+		        float number = Float.parseFloat(parts[i]);
+		        float rounded = (int) Math.round(number * 1000) / 1000f;
+		        resp[i] = rounded;
+		    }
+		    answer[0][1]=resp[0]; answer[0][0]=(float) 0;
+		    answer[1][1]=resp[1]; answer[1][0]=(float) 1;
+		    answer[2][1]=resp[2]; answer[2][0]=(float) 2;
+		    for(int i=3;i<resp.length;i++){
+		    	float dist1=answer[0][1]-resp[i];
+		    	float dist2=answer[1][1]-resp[i];
+		    	float dist3=answer[2][1]-resp[i];
+		    	
+		    	if(dist1>dist2 && dist1>dist3 && dist1>0){
+		    		answer[0][1]=resp[i]; answer[0][0]=(float) i;
+		    	}else if(dist2>dist1 && dist2>dist3 && dist2>0){
+		    		answer[1][1]=resp[i]; answer[1][0]=(float) i;
+		    	}else if(dist3>dist1 && dist3>dist2 && dist3>0){
+		    		answer[2][1]=resp[i]; answer[2][0]=(float) i;
+		    	}
+		    }
+		    
+		    
+		    
 		}catch (InternalServerErrorException |ParserConfigurationException |SAXException |IOException e) {
 			// e.printStackTrace();
 			System.err.println("Réponse HTTP " + e.toString());
