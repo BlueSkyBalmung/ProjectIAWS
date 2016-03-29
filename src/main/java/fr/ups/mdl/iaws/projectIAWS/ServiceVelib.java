@@ -25,7 +25,9 @@ import java.util.List;
 
 import javax.json.Json;
 import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
 
 import javax.ws.rs.InternalServerErrorException;
@@ -51,7 +53,7 @@ public class ServiceVelib {
 			WebTarget targetJCDecaux = clientJCDecaux.target(API_URI);
 		
 			List<Float> l=accessOSM(adresse);
-			String polylines="[["+"],[";
+			
 		
 			//ARCGIS
 			//ex ArcGis request :
@@ -64,28 +66,33 @@ public class ServiceVelib {
 			
 			JsonArray resultJCDecaux = targetJCDecaux.request(MediaType.APPLICATION_JSON).get(JsonArray.class);
 			JsonArray closer;
-			int lat, lng;
-			
+			float lat, lng;
+			JsonArrayBuilder polylines = Json.createArrayBuilder();
 			for(int i=0;i<resultJCDecaux.size();i++){
 				JsonObject ite=resultJCDecaux.getJsonObject(i);
-
-				lat=ite.getInt("lat");
-				lng=ite.getInt("lng");
 				
-				formData.add("", "");
+				lat=Float.valueOf(ite.getString("lat"));
+				lng=Float.valueOf(ite.getString("lng"));
+				JsonObjectBuilder oneAssert=Json.createObjectBuilder();
+				
+				polylines.add(Json.createObjectBuilder().
+						add("path", "[[["+l.get(0).toString()+","+l.get(1).toString()+"],["+ite.getString("lat")+","+ite.getString("lng")+"]]]").build());
 				
 			}
 			
-			
+			formData.add("polylines", polylines.toString());
 		    formData.add("lengthUnit", "9036");
 		    formData.add("calculationType", "preserveShape");
 		    JsonObject responseArcGIS = arcGIStarget.request(MediaType.APPLICATION_JSON).post(Entity.form(formData),JsonObject.class);
+		   
+		    //A Debattre
+		    //Explication : je recois un string de la forme [valFloat1,valFloat2,...] que je dois transformer en tableau de float pour le parcourir
 		    Float[][] answer=new Float[3][2];
 		    String[] parts = responseArcGIS.getString("lengths").replace("[", "").replace("]","").split(",");
 		    float[] resp = new float[parts.length];
 		    for (int i = 0; i < parts.length; ++i) {
 		        float number = Float.parseFloat(parts[i]);
-		        float rounded = (int) Math.round(number * 1000) / 1000f;
+		        float rounded = (int) Math.round(number * 10000) / 10000f;
 		        resp[i] = rounded;
 		    }
 		    answer[0][1]=resp[0]; answer[0][0]=(float) 0;
@@ -104,7 +111,7 @@ public class ServiceVelib {
 		    		answer[2][1]=resp[i]; answer[2][0]=(float) i;
 		    	}
 		    }
-		    
+		    //Fin du "A Debattre"
 		    
 		    
 		}catch (InternalServerErrorException |ParserConfigurationException |SAXException |IOException e) {
@@ -135,7 +142,7 @@ public class ServiceVelib {
 				String lng = place.getAttribute("lon");
 				List<Float> l=new ArrayList<Float>();
 				l.add(Float.valueOf("lat"));
-				
+				l.add(Float.valueOf("lon"));
 				return l;
 				
 	}
