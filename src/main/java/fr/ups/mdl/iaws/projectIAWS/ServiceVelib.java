@@ -48,7 +48,7 @@ public class ServiceVelib {
 	public void stationNonVide(String adresse){
 		try {
 		
-			//JCDECAUX
+			//JCDECAUX 
 			Client clientJCDecaux = ClientBuilder.newClient();
 			WebTarget targetJCDecaux = clientJCDecaux.target(API_URI);
 		
