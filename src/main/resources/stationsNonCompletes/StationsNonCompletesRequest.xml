@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<StationsNonCompletesRequest xmlns="http://stationsNonCompletes/ws" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://stationsNonCompletes/ws StationsNonCompletes">
+	<adresse>21 Avenue des Coteaux</adresse>
+</StationsNonCompletesRequest>

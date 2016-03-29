@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://tempsTrajetVelo/ws" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:element name="TempsTrajetVeloRequest" type="exem:TempsTrajetVeloRequestType" xmlns:exem="http://tempsTrajetVelo/ws"/>
+
+    <xs:complexType name="TempsTrajetVeloRequestType">
+        <xs:all>
+            <xs:element type="xs:string" name="adresseDepart"/>
+            <xs:element type="xs:string" name="adresseArrivee"/>
+        </xs:all>
+    </xs:complexType>
+	
+	<xs:element name="TempsTrajetVelo" type="exem:TempsTrajetVeloType" xmlns:exem="http://tempsTrajetVelo/ws"/>
+
+    <xs:complexType name="TempsTrajetVeloType">
+        <xs:all>
+            <xs:element type="xs:time" name="tempsTrajet"/>
+        </xs:all>
+    </xs:complexType>
+	
+</xs:schema>

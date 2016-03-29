@@ -1,4 +1,4 @@
-package iaws.relevenotes.ws.contractfirst;
+package fr.ups.mdl.iaws.projectIAWS;
 
 import org.springframework.core.io.ClassPathResource;
 import org.w3c.dom.Document;
@@ -11,7 +11,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
 /**
- * @author franck Silvestre
+ * @author 
  */
 public class XmlHelper {
 

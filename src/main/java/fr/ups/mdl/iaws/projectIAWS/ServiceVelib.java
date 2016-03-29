@@ -22,6 +22,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -43,9 +44,9 @@ import javax.ws.rs.core.MultivaluedHashMap;
  *
  */
 public class ServiceVelib {
-	private String cleJCDecaux="039a8fcb1cfb47bcaa20e9ed00f0f07f64bff95e";
-	private static final String API_URI =  "https://api.jcdecaux.com/vls/v1/stations?contract=Toulouse&apiKey=039a8fcb1cfb47bcaa20e9ed00f0f07f64bff95e";
-	public void stationNonVide(String adresse){
+	private static String cleJCDecaux="039a8fcb1cfb47bcaa20e9ed00f0f07f64bff95e";
+	private static final String API_URI =  "https://api.jcdecaux.com/vls/v1/stations?contract=Toulouse&apiKey="+cleJCDecaux;
+	public HashMap<String,Integer> stationNonVide(String adresse){
 		try {
 		
 			//JCDECAUX 
@@ -119,7 +120,7 @@ public class ServiceVelib {
 			System.err.println("Réponse HTTP " + e.toString());
 		}
 		
-
+		return new HashMap<String,Integer>();
 	}
 	
 	private List<Float> accessOSM(String adresse) throws ParserConfigurationException, SAXException, IOException{

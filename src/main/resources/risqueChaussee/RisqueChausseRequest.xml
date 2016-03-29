@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RisqueChausseeRequest xmlns="http://risqueChausse/ws" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://risqueChausse/ws RisqueChaussee.xsd">
+	<adresse>21 Avenue des Coteaux</adresse>
+</RisqueChausseeRequest>

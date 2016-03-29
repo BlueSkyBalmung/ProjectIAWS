@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<StationsNonVides xmlns="http://stationsNonVides/ws" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://stationsNonVides/ws StationsNonVides">
+	<stations>
+		<station>
+			<adresse>21 Avenue des Coteaux</adresse>
+			<nombreVelos>12</nombreVelos>
+		</station>
+	</stations>
+</StationsNonVides>
