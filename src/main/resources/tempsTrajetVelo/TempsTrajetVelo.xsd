@@ -5,6 +5,7 @@
 
     <xs:complexType name="TempsTrajetVeloRequestType">
         <xs:all>
+            <xs:element type="xs:int" name="vitesseDeplacement"/>
             <xs:element type="xs:string" name="adresseDepart"/>
             <xs:element type="xs:string" name="adresseArrivee"/>
         </xs:all>

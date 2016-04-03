@@ -1,4 +1,4 @@
-package iaws.relevenotes.ws.contractfirst;
+/*package iaws.relevenotes.ws.contractfirst;
 
 import iaws.relevenotes.domain.Evaluation;
 import iaws.relevenotes.domain.nomenclature.AnneeScolaire;
@@ -16,9 +16,9 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import org.springframework.ws.server.endpoint.annotation.XPathParam;
 import org.w3c.dom.Element;
 
-/**
+*//**
  * @author Franck Silvestre
- */
+ *//*
 
 @Endpoint
 public class ReleveNotesEndpoint {
@@ -55,4 +55,4 @@ public class ReleveNotesEndpoint {
         Element elt = XmlHelper.getRootElementFromFileInClasspath("ReleveNotes.xml") ;
         return  elt;
     }
-}
+}*/

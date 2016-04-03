@@ -14,31 +14,33 @@ import org.springframework.ws.server.endpoint.annotation.XPathParam;
 import org.w3c.dom.Element;
 
 @Endpoint
-public class StationsNonVidesEndpoint {
+public class TempsTrajetPiedEndpoint {
 	private ServiceVelib serviceVelib;
 
-	private static final String NAMESPACE_URI = "http://stationsNonVides/ws";
+	private static final String NAMESPACE_URI = "http://tempsTrajetPied/ws";
 
 	@Autowired
-	public StationsNonVidesEndpoint(ServiceVelib serviceVelib) {
+	public TempsTrajetPiedEndpoint(ServiceVelib serviceVelib) {
 		this.serviceVelib = serviceVelib;
 	}
 
-	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "StationsNonVidesRequest") // nom de l'élément racine
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "TempsTrajetPiedRequest") // nom de l'élément racine
 	@Namespace(prefix = "rn", uri = NAMESPACE_URI) // espace de nom pour les expressions XPath ci-dessous
 	@ResponsePayload
 	public Element handleStationsNonVidesRequest(
-			@XPathParam("/rn:StationsNonVidesRequest/rn:adresse/text()") String adresse)
+			@XPathParam("/TempsTrajetPiedRequest/rn:adresseDepart/text()") String adresseDepart,
+			@XPathParam("/TempsTrajetPiedRequest/rn:adresseArrivee/text()") String adresseArrivee,
+			@XPathParam("/TempsTrajetPiedRequest/rn:vitesseDeplacement/text()") String vitesseDeplacement)
 			throws Exception {
 
 		// Invoque le service "releveNoteService" pour récupérer les objets recherchés :
-		HashMap<String,Integer> stations = serviceVelib.stationNonVide(adresse);
+		int temps = serviceVelib.tempsTrajetPied(adresseDepart, adresseArrivee, vitesseDeplacement);
 
 		// Transforme en élément XML ad-hoc pour le retour :
 		// Ici, on prend le parti de renvoyer un fichier XML statique.
 		// Il faudrait traiter la liste des évaluations avec une API XML pour
 		// fournir l'élément réponse de manière dynamique
-		Element elt = XmlHelper.getRootElementFromFileInClasspath("StationsNonVides.xml");
+		Element elt = XmlHelper.getRootElementFromFileInClasspath("TempsTrajetPied.xml");
 		return elt;
 	}
 }
