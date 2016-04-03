@@ -3,7 +3,13 @@ package fr.ups.mdl.iaws.projectIAWS.endpoints;
 import fr.ups.mdl.iaws.projectIAWS.ServiceVelib;
 import fr.ups.mdl.iaws.projectIAWS.XmlHelper;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
@@ -11,7 +17,11 @@ import org.springframework.ws.server.endpoint.annotation.Namespace;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import org.springframework.ws.server.endpoint.annotation.XPathParam;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 @Endpoint
 public class RisqueChausseeEndpoint {
@@ -29,16 +39,22 @@ public class RisqueChausseeEndpoint {
 	@ResponsePayload
 	public Element handleStationsNonVidesRequest(
 			@XPathParam("/rn:RisqueChausseeRequest/rn:adresse/text()") String adresse)
-			throws Exception {
+			throws Exception, ParserConfigurationException, SAXException, IOException {
 
 		// Invoque le service "releveNoteService" pour récupérer les objets recherchés :
 		float risque = serviceVelib.stationNonCompletes(adresse);
 
-		// Transforme en élément XML ad-hoc pour le retour :
-		// Ici, on prend le parti de renvoyer un fichier XML statique.
-		// Il faudrait traiter la liste des évaluations avec une API XML pour
-		// fournir l'élément réponse de manière dynamique
-		Element elt = XmlHelper.getRootElementFromFileInClasspath("RisqueChausse.xml");
-		return elt;
+		// Creation du DOM builder
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+	    final DocumentBuilder builder = factory.newDocumentBuilder();       
+	    final Document document= builder.parse(new File("RisqueChaussee.xml"));
+	    
+	    // Modification des noeuds dans le document XML
+		final Element elementRisque = (Element)document.getElementsByTagName("risque").item(0);
+		elementRisque.setTextContent(String.valueOf(risque));
+		
+		// Envoi du document XML en reponse
+		final Element racine = document.getDocumentElement();
+		return racine;
 	}
 }

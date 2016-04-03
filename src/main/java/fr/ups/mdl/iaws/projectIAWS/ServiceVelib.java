@@ -46,7 +46,7 @@ import javax.ws.rs.core.MultivaluedHashMap;
 public class ServiceVelib {
 	private static String cleJCDecaux="039a8fcb1cfb47bcaa20e9ed00f0f07f64bff95e";
 	private static final String API_URI =  "https://api.jcdecaux.com/vls/v1/stations?contract=Toulouse&apiKey="+cleJCDecaux;
-	public HashMap<String,Integer> stationNonVide(String adresse){
+	public HashMap<String,Integer> stationsNonVides(String adresse){
 		try {
 		
 			//JCDECAUX 
@@ -154,7 +154,7 @@ public class ServiceVelib {
 				
 	}
 	
-	public void stationNonComplete(String adresse){
+	public void stationsNonCompletes(String adresse){
 		
 	}
 	

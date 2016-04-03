@@ -4,7 +4,15 @@ xsi:schemaLocation="http://stationsNonCompletes/ws StationsNonCompletes">
 	<stations>
 		<station>
 			<adresse>21 Avenue des Coteaux</adresse>
-			<nombreVelos>12</nombreVelos>
+			<nombrePlaces>12</nombrePlaces>
+		</station>
+		<station>
+			<adresse>21 Avenue des Coteaux</adresse>
+			<nombrePlaces>12</nombrePlaces>
+		</station>
+		<station>
+			<adresse>21 Avenue des Coteaux</adresse>
+			<nombrePlaces>12</nombrePlaces>
 		</station>
 	</stations>
 </StationsNonCompletes>
