@@ -1,6 +1,7 @@
 package fr.ups.mdl.iaws.projectIAWS.endpoints;
 
 import fr.ups.mdl.iaws.projectIAWS.ServiceVelib;
+import fr.ups.mdl.iaws.projectIAWS.Station;
 import fr.ups.mdl.iaws.projectIAWS.XmlHelper;
 
 import java.io.File;
@@ -41,8 +42,7 @@ public class RisqueChausseeEndpoint {
 			@XPathParam("/rn:RisqueChausseeRequest/rn:adresse/text()") String adresse)
 			throws Exception, ParserConfigurationException, SAXException, IOException {
 
-		// Invoque le service "releveNoteService" pour récupérer les objets recherchés :
-		HashMap<String, Integer> risque = serviceVelib.stationNonComplete(adresse);
+		Station[] risque = serviceVelib.stationNonComplete(adresse);
 
 		// Creation du DOM builder
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

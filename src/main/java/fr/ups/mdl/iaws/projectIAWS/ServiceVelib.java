@@ -46,6 +46,7 @@ import javax.ws.rs.core.MultivaluedHashMap;
 public class ServiceVelib {
 	private static String cleJCDecaux="039a8fcb1cfb47bcaa20e9ed00f0f07f64bff95e";
 	private static final String API_URI =  "https://api.jcdecaux.com/vls/v1/stations?contract=Toulouse&apiKey="+cleJCDecaux;
+	
 	public ArrayList<Station> stationsNonVides(String adresse){
 		try {
 		
@@ -117,10 +118,11 @@ public class ServiceVelib {
 		    //Fin du "A Debattre"
 		    
 		    HashMap<String,Integer> hm=new HashMap<String,Integer>();
-			hm.put(resultJCDecaux.getJsonObject((int)answer[0][0]).getString("name"),resultJCDecaux.getJsonObject(1).getInt("available_bikes"));
-			hm.put(resultJCDecaux.getJsonObject((int)answer[1][0]).getString("name"),resultJCDecaux.getJsonObject(1).getInt("available_bikes"));
-			hm.put(resultJCDecaux.getJsonObject((int)answer[2][0]).getString("name"),resultJCDecaux.getJsonObject(1).getInt("available_bikes"));
-			return hm;
+		    ArrayList<Station> stations= new ArrayList<Station>();
+			stations.add(new Station(resultJCDecaux.getJsonObject((int)answer[0][0]).getString("address"), resultJCDecaux.getJsonObject((int)answer[0][0]).getInt("available_bike_stands"), resultJCDecaux.getJsonObject((int)answer[0][0]).getInt("available_bikes")));
+			stations.add(new Station(resultJCDecaux.getJsonObject((int)answer[1][0]).getString("address"), resultJCDecaux.getJsonObject((int)answer[1][0]).getInt("available_bike_stands"), resultJCDecaux.getJsonObject((int)answer[1][0]).getInt("available_bikes")));
+			stations.add(new Station(resultJCDecaux.getJsonObject((int)answer[2][0]).getString("address"), resultJCDecaux.getJsonObject((int)answer[2][0]).getInt("available_bike_stands"), resultJCDecaux.getJsonObject((int)answer[2][0]).getInt("available_bikes")));
+			return stations;
 		}catch (InternalServerErrorException |ParserConfigurationException |SAXException |IOException e) {
 			// e.printStackTrace();
 			System.err.println("Réponse HTTP " + e.toString());
@@ -154,8 +156,8 @@ public class ServiceVelib {
 				
 	}
 	
-	public void stationsNonCompletes(String adresse){
-		
+	public ArrayList<Station> stationsNonCompletes(String adresse){
+		return null;
 	}
 
 	public ArrayList<Station> stationNonComplete(String adresse){

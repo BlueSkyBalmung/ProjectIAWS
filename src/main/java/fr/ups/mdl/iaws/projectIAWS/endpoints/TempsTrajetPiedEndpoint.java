@@ -42,7 +42,6 @@ public class TempsTrajetPiedEndpoint {
 			@XPathParam("/TempsTrajetPiedRequest/rn:vitesseDeplacement/text()") String vitesseDeplacement)
 			throws Exception {
 
-		// Invoque le service "releveNoteService" pour récupérer les objets recherchés :
 		int temps = serviceVelib.tempsTrajetPied(adresseDepart, adresseArrivee, vitesseDeplacement);
 
 		// Creation du DOM builder

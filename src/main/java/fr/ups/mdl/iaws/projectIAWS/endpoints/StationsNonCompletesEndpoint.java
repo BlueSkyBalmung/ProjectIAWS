@@ -1,6 +1,7 @@
 package fr.ups.mdl.iaws.projectIAWS.endpoints;
 
 import fr.ups.mdl.iaws.projectIAWS.ServiceVelib;
+import fr.ups.mdl.iaws.projectIAWS.Station;
 import fr.ups.mdl.iaws.projectIAWS.XmlHelper;
 
 import java.io.File;
@@ -38,7 +39,6 @@ public class StationsNonCompletesEndpoint {
 			@XPathParam("/rn:StationsNonCompletesRequest/rn:adresse/text()") String adresse)
 			throws Exception {
 
-		// Invoque le service "releveNoteService" pour récupérer les objets recherchés :
 		ArrayList<Station> stations = serviceVelib.stationsNonCompletes(adresse);
 
 		// Creation du DOM builder
@@ -63,7 +63,7 @@ public class StationsNonCompletesEndpoint {
 	    			elementNoeudEnfant.setTextContent(station.getAdresse());
 	    		}
 	    		else if ("nombrePlaces".equals(elementNoeudEnfant.getNodeName())) {
-	    			elementNoeudEnfant.setTextContent(station.getNombrePlaces());
+	    			elementNoeudEnfant.setTextContent(String.valueOf(station.getNombrePlaces()));
 	    		}
 	    	}
 	    }
