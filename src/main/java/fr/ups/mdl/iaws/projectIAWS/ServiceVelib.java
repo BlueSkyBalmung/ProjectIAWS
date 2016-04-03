@@ -49,7 +49,7 @@ public class ServiceVelib {
 	public HashMap<String,Integer> stationNonVide(String adresse){
 		try {
 		
-			//JCDECAUX
+			//JCDECAUX 
 			Client clientJCDecaux = ClientBuilder.newClient();
 			WebTarget targetJCDecaux = clientJCDecaux.target(API_URI);
 		
@@ -71,14 +71,16 @@ public class ServiceVelib {
 			JsonArrayBuilder polylines = Json.createArrayBuilder();
 			for(int i=0;i<resultJCDecaux.size();i++){
 				JsonObject ite=resultJCDecaux.getJsonObject(i);
+				//available_bikes
+				if (ite.getInt("available_bikes")>0){
+					
+					lat=Float.valueOf(ite.getJsonObject("position").getString("lat"));
+					lng=Float.valueOf(ite.getJsonObject("position").getString("lng"));
+					JsonObjectBuilder oneAssert=Json.createObjectBuilder();
 				
-				lat=Float.valueOf(ite.getString("lat"));
-				lng=Float.valueOf(ite.getString("lng"));
-				JsonObjectBuilder oneAssert=Json.createObjectBuilder();
-				
-				polylines.add(Json.createObjectBuilder().
+					polylines.add(Json.createObjectBuilder().
 						add("path", "[[["+l.get(0).toString()+","+l.get(1).toString()+"],["+ite.getString("lat")+","+ite.getString("lng")+"]]]").build());
-				
+				}
 			}
 			
 			formData.add("polylines", polylines.toString());
@@ -88,7 +90,7 @@ public class ServiceVelib {
 		   
 		    //A Debattre
 		    //Explication : je recois un string de la forme [valFloat1,valFloat2,...] que je dois transformer en tableau de float pour le parcourir
-		    Float[][] answer=new Float[3][2];
+		    float[][] answer=new float[3][2];
 		    String[] parts = responseArcGIS.getString("lengths").replace("[", "").replace("]","").split(",");
 		    float[] resp = new float[parts.length];
 		    for (int i = 0; i < parts.length; ++i) {
@@ -114,13 +116,17 @@ public class ServiceVelib {
 		    }
 		    //Fin du "A Debattre"
 		    
-		    
+		    HashMap<String,Integer> hm=new HashMap<String,Integer>();
+			hm.put(resultJCDecaux.getJsonObject((int)answer[0][0]).getString("name"),resultJCDecaux.getJsonObject(1).getInt("available_bikes"));
+			hm.put(resultJCDecaux.getJsonObject((int)answer[1][0]).getString("name"),resultJCDecaux.getJsonObject(1).getInt("available_bikes"));
+			hm.put(resultJCDecaux.getJsonObject((int)answer[2][0]).getString("name"),resultJCDecaux.getJsonObject(1).getInt("available_bikes"));
+			return hm;
 		}catch (InternalServerErrorException |ParserConfigurationException |SAXException |IOException e) {
 			// e.printStackTrace();
 			System.err.println("Réponse HTTP " + e.toString());
+			return null;
 		}
 		
-		return new HashMap<String,Integer>();
 	}
 	
 	private List<Float> accessOSM(String adresse) throws ParserConfigurationException, SAXException, IOException{
