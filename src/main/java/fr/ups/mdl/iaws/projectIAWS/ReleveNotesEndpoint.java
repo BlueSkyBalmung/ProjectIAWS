@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 package fr.ups.mdl.iaws.projectIAWS;
+=======
+/*package iaws.relevenotes.ws.contractfirst;
+>>>>>>> 572e75ea627d9669e0b786a90bcafb78477c8e3b
 
 /*import iaws.relevenotes.domain.Evaluation;
 import iaws.relevenotes.domain.nomenclature.AnneeScolaire;
@@ -16,9 +20,9 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import org.springframework.ws.server.endpoint.annotation.XPathParam;
 import org.w3c.dom.Element;*/
 
-/**
+*//**
  * @author Franck Silvestre
- */
+ *//*
 
 //@Endpoint
 public class ReleveNotesEndpoint {
@@ -54,5 +58,10 @@ public class ReleveNotesEndpoint {
 	// fournir l'élément réponse de manière dynamique
         Element elt = XmlHelper.getRootElementFromFileInClasspath("ReleveNotes.xml") ;
         return  elt;
+<<<<<<< HEAD
     }*/
 }
+=======
+    }
+}*/
+>>>>>>> 572e75ea627d9669e0b786a90bcafb78477c8e3b

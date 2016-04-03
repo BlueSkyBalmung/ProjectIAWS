@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TempsTrajetPiedRequest xmlns="http://tempsTrajetPied/ws" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://tempsTrajetPied/ws ReleveNotes.xsd">
+	<vitesseDeplacement>5</vitesseDeplacement>
 	<adresseDepart>21 Avenue des Coteaux</adresseDepart>
 	<adresseArivee>21 Avenue des Coteaux</adresseArivee>
 </TempsTrajetPiedRequest>
