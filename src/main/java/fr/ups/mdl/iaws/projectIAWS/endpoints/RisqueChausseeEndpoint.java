@@ -1,6 +1,7 @@
 package fr.ups.mdl.iaws.projectIAWS.endpoints;
 
 import fr.ups.mdl.iaws.projectIAWS.ServiceVelib;
+import fr.ups.mdl.iaws.projectIAWS.Station;
 import fr.ups.mdl.iaws.projectIAWS.XmlHelper;
 
 import java.util.*;
@@ -32,7 +33,7 @@ public class RisqueChausseeEndpoint {
 			throws Exception {
 
 		// Invoque le service "releveNoteService" pour récupérer les objets recherchés :
-		HashMap<String, Integer> risque = serviceVelib.stationNonComplete(adresse);
+		Station[] risque = serviceVelib.stationNonComplete(adresse);
 
 		// Transforme en élément XML ad-hoc pour le retour :
 		// Ici, on prend le parti de renvoyer un fichier XML statique.
