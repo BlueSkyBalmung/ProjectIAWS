@@ -1,6 +1,6 @@
-package iaws.relevenotes.ws.contractfirst;
+package fr.ups.mdl.iaws.projectIAWS;
 
-import iaws.relevenotes.domain.Evaluation;
+/*import iaws.relevenotes.domain.Evaluation;
 import iaws.relevenotes.domain.nomenclature.AnneeScolaire;
 import iaws.relevenotes.domain.nomenclature.Niveau;
 import iaws.relevenotes.domain.nomenclature.Semestre;
@@ -14,16 +14,16 @@ import org.springframework.ws.server.endpoint.annotation.Namespace;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import org.springframework.ws.server.endpoint.annotation.XPathParam;
-import org.w3c.dom.Element;
+import org.w3c.dom.Element;*/
 
 /**
  * @author Franck Silvestre
  */
 
-@Endpoint
+//@Endpoint
 public class ReleveNotesEndpoint {
 
-    private ReleveNoteService releveNotesService;
+ /*   private ReleveNoteService releveNotesService;
 
     private static final String NAMESPACE_URI = "http://iaws/ws/contractfirst/exemple";
 
@@ -54,5 +54,5 @@ public class ReleveNotesEndpoint {
 	// fournir l'élément réponse de manière dynamique
         Element elt = XmlHelper.getRootElementFromFileInClasspath("ReleveNotes.xml") ;
         return  elt;
-    }
+    }*/
 }
