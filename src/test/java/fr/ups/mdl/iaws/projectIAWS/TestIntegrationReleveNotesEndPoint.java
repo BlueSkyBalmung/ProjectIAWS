@@ -1,4 +1,4 @@
-package iaws.relevenotes.ws.contractfirst;
+package fr.ups.mdl.iaws.projectIAWS;
 
 import org.junit.Before;
 import org.junit.Test;

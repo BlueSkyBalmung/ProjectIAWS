@@ -157,6 +157,16 @@ public class ServiceVelib {
 	public HashMap<String, Integer> stationNonComplete(String adresse){
 		return null;
 	}
+
+	public int tempsTrajetPied(String adresseDepart, String adresseArrivee, String vitesseDeplacement) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int tempsTrajetVelo(String adresseDepart, String adresseArrivee, String vitesseDeplacement) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 	
 }
