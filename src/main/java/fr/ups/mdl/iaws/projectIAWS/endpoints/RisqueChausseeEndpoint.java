@@ -42,11 +42,11 @@ public class RisqueChausseeEndpoint {
 			@XPathParam("/rn:RisqueChausseeRequest/rn:adresse/text()") String adresse)
 			throws Exception, ParserConfigurationException, SAXException, IOException {
 
-		Station[] risque = serviceVelib.stationNonComplete(adresse);
+		float risque = serviceVelib.risqueChausse(adresse);
 
 		// Creation du DOM builder
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-	    final DocumentBuilder builder = factory.newDocumentBuilder();       
+	    final DocumentBuilder builder = factory.newDocumentBuilder();
 	    final Document document= builder.parse(new File("RisqueChaussee.xml"));
 	    
 	    // Modification des noeuds dans le document XML

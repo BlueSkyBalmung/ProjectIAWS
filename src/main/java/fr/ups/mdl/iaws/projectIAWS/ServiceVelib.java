@@ -117,8 +117,7 @@ public class ServiceVelib {
 		    }
 		    //Fin du "A Debattre"
 		    
-		    HashMap<String,Integer> hm=new HashMap<String,Integer>();
-		    ArrayList<Station> stations= new ArrayList<Station>();
+		    ArrayList<Station> stations = new ArrayList<Station>();
 			stations.add(new Station(resultJCDecaux.getJsonObject((int)answer[0][0]).getString("address"), resultJCDecaux.getJsonObject((int)answer[0][0]).getInt("available_bike_stands"), resultJCDecaux.getJsonObject((int)answer[0][0]).getInt("available_bikes")));
 			stations.add(new Station(resultJCDecaux.getJsonObject((int)answer[1][0]).getString("address"), resultJCDecaux.getJsonObject((int)answer[1][0]).getInt("available_bike_stands"), resultJCDecaux.getJsonObject((int)answer[1][0]).getInt("available_bikes")));
 			stations.add(new Station(resultJCDecaux.getJsonObject((int)answer[2][0]).getString("address"), resultJCDecaux.getJsonObject((int)answer[2][0]).getInt("available_bike_stands"), resultJCDecaux.getJsonObject((int)answer[2][0]).getInt("available_bikes")));
@@ -156,23 +155,19 @@ public class ServiceVelib {
 				
 	}
 	
-	public ArrayList<Station> stationsNonCompletes(String adresse){
-		return null;
+	public float risqueChausse(String adresse) {
+		return 0;
 	}
-
-	public ArrayList<Station> stationNonComplete(String adresse){
+	
+	public ArrayList<Station> stationsNonCompletes(String adresse) {
 		return null;
 	}
 
 	public int tempsTrajetPied(String adresseDepart, String adresseArrivee, String vitesseDeplacement) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	public int tempsTrajetVelo(String adresseDepart, String adresseArrivee, String vitesseDeplacement) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
-	
-	
 }
