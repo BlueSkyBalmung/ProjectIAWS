@@ -1,4 +1,4 @@
-package iaws.relevenotes.ws.contractfirst;
+package fr.ups.mdl.iaws.projectIAWS;
 
 import junit.framework.TestCase;
 import org.w3c.dom.Element;

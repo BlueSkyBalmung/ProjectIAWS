@@ -42,7 +42,7 @@ public class RisqueChausseeEndpoint {
 			throws Exception, ParserConfigurationException, SAXException, IOException {
 
 		// Invoque le service "releveNoteService" pour récupérer les objets recherchés :
-		float risque = serviceVelib.stationNonCompletes(adresse);
+		HashMap<String, Integer> risque = serviceVelib.stationNonComplete(adresse);
 
 		// Creation du DOM builder
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
