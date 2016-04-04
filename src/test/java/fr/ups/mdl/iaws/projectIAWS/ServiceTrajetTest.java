@@ -17,7 +17,7 @@ public class ServiceTrajetTest {
 	@Test
 	public void testStationVide(){
 		ServiceVelib serviceVelib=new ServiceVelib();
-		ArrayList<Station> stationsNonVide=serviceVelib.stationsNonVides("Université Paul Sabatier Toulouse");
+		ArrayList<Station> stationsNonVide=serviceVelib.stationsNonVides("Université Paul Sabatier");
 		assert  stationsNonVide.size()==3:"nombre de stations respectés";
 		assert  stationsNonVide.get(0).getAdresse().isEmpty():"pas d'adresse vide dans 0";
 		assert  stationsNonVide.get(1).getAdresse().isEmpty():"pas d'adresse vide dans 1";

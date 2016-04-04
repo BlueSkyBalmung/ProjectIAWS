@@ -61,7 +61,8 @@ public class ServiceVelib {
 			//ex ArcGis request :
 			//http://sampleserver6.arcgisonline.com/ArcGIS/rest/services/Utilities/Geometry/GeometryServer/lengths?sr=4269&polylines=[{"paths":[[[-117,34],[-116,34],[-117,33]],[[-115,44],[-114,43],[-115,43]]]},{"paths":[[[32.49,17.83],[31.96,17.59],[30.87,17.01],[30.11,16.86]]]}]&lengthUnit=9036&calculationType=preserveShape
 			Client clientaArcGIS = ClientBuilder.newClient();
-			WebTarget arcGIStarget = clientaArcGIS.register(JsonContentTypeResponseFilter.class).target("http://sampleserver6.arcgisonline.com/ArcGIS/rest/services/Utilities/Geometry/GeometryServer/lengths");
+			WebTarget arcGIStarget = clientaArcGIS.register(JsonContentTypeResponseFilter.class)
+					.target("http://sampleserver6.arcgisonline.com/ArcGIS/rest/services/Utilities/Geometry/GeometryServer/lengths");
 			MultivaluedMap<String, String> formData = new MultivaluedHashMap<String, String>();
 			formData.add("sr", "4269");
 	
@@ -80,14 +81,16 @@ public class ServiceVelib {
 					JsonObjectBuilder oneAssert=Json.createObjectBuilder();
 				
 					polylines.add(Json.createObjectBuilder().
-						add("path", "[[["+l.get(0).toString()+","+l.get(1).toString()+"],["+ite.getString("lat")+","+ite.getString("lng")+"]]]").build());
+						add("path", "[[["+l.get(0).toString()+","+l.get(1).toString()+"],["
+					+ite.getString("lat")+","+ite.getString("lng")+"]]]").build());
 				}
 			}
 			
 			formData.add("polylines", polylines.toString());
 		    formData.add("lengthUnit", "9036");
 		    formData.add("calculationType", "preserveShape");
-		    JsonObject responseArcGIS = arcGIStarget.request(MediaType.APPLICATION_JSON).post(Entity.form(formData),JsonObject.class);
+		    JsonObject responseArcGIS = arcGIStarget.request(MediaType.APPLICATION_JSON)
+		    		.post(Entity.form(formData),JsonObject.class);
 		   
 		    //A Debattre
 		    //Explication : je recois un string de la forme [valFloat1,valFloat2,...] que je dois transformer en tableau de float pour le parcourir
@@ -118,9 +121,15 @@ public class ServiceVelib {
 		    //Fin du "A Debattre"
 		    
 		    ArrayList<Station> stations = new ArrayList<Station>();
-			stations.add(new Station(resultJCDecaux.getJsonObject((int)answer[0][0]).getString("address"), resultJCDecaux.getJsonObject((int)answer[0][0]).getInt("available_bike_stands"), resultJCDecaux.getJsonObject((int)answer[0][0]).getInt("available_bikes")));
-			stations.add(new Station(resultJCDecaux.getJsonObject((int)answer[1][0]).getString("address"), resultJCDecaux.getJsonObject((int)answer[1][0]).getInt("available_bike_stands"), resultJCDecaux.getJsonObject((int)answer[1][0]).getInt("available_bikes")));
-			stations.add(new Station(resultJCDecaux.getJsonObject((int)answer[2][0]).getString("address"), resultJCDecaux.getJsonObject((int)answer[2][0]).getInt("available_bike_stands"), resultJCDecaux.getJsonObject((int)answer[2][0]).getInt("available_bikes")));
+			stations.add(new Station(resultJCDecaux.getJsonObject((int)answer[0][0]).getString("address")
+					, resultJCDecaux.getJsonObject((int)answer[0][0]).getInt("available_bike_stands")
+					, resultJCDecaux.getJsonObject((int)answer[0][0]).getInt("available_bikes")));
+			stations.add(new Station(resultJCDecaux.getJsonObject((int)answer[1][0]).getString("address")
+					, resultJCDecaux.getJsonObject((int)answer[1][0]).getInt("available_bike_stands")
+					, resultJCDecaux.getJsonObject((int)answer[1][0]).getInt("available_bikes")));
+			stations.add(new Station(resultJCDecaux.getJsonObject((int)answer[2][0]).getString("address")
+					, resultJCDecaux.getJsonObject((int)answer[2][0]).getInt("available_bike_stands")
+					, resultJCDecaux.getJsonObject((int)answer[2][0]).getInt("available_bikes")));
 			return stations;
 		}catch (InternalServerErrorException |ParserConfigurationException |SAXException |IOException e) {
 			// e.printStackTrace();
@@ -135,7 +144,8 @@ public class ServiceVelib {
 				//ex request :
 				//http://nominatim.openstreetmap.org/search?q=Université+Paul+Sabatier,+Toulouse&format=xml
 				//partie acces
-				String requeteOSM = "http://nominatim.openstreetmap.org/search?q="+adresse.replace(" ","+")+",+Toulouse&format=xml&polygon=1&addressdetails=1";
+				String requeteOSM = "http://nominatim.openstreetmap.org/search?q="+adresse.replace(" ","+")
+				+",+Toulouse&format=xml&polygon=1&addressdetails=1";
 				Client clientOSM = ClientBuilder.newClient();
 				WebTarget targetOSM= clientOSM.target(requeteOSM);
 				InputStream refFic=targetOSM.request(MediaType.APPLICATION_XML).get(InputStream.class);
@@ -148,10 +158,10 @@ public class ServiceVelib {
 				Element place = (Element)root.getFirstChild();
 				String lat= place.getAttribute("lat");
 				String lng = place.getAttribute("lon");
-				List<Float> l=new ArrayList<Float>();
-				l.add(Float.valueOf("lat"));
-				l.add(Float.valueOf("lon"));
-				return l;
+				List<Float> coord=new ArrayList<Float>();
+				coord.add(Float.valueOf("lat"));
+				coord.add(Float.valueOf("lon"));
+				return coord;
 				
 	}
 	
