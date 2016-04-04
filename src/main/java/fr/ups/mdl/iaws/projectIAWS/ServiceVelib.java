@@ -44,8 +44,8 @@ import javax.ws.rs.core.MultivaluedHashMap;
  *
  */
 public class ServiceVelib {
-	private static String cleJCDecaux="039a8fcb1cfb47bcaa20e9ed00f0f07f64bff95e";
-	private static final String API_URI =  "https://api.jcdecaux.com/vls/v1/stations?contract=Toulouse&apiKey="+cleJCDecaux;
+	private static String cleJCDecaux = "039a8fcb1cfb47bcaa20e9ed00f0f07f64bff95e";
+	private static final String API_URI = "https://api.jcdecaux.com/vls/v1/stations?contract=Toulouse&apiKey="+cleJCDecaux;
 	
 	public ArrayList<Station> stationsNonVides(String adresse){
 		try {
@@ -54,9 +54,8 @@ public class ServiceVelib {
 			Client clientJCDecaux = ClientBuilder.newClient();
 			WebTarget targetJCDecaux = clientJCDecaux.target(API_URI);
 		
-			List<Float> l=accessOSM(adresse);
+			List<Float> coordonnees = AccesOSM.calculCoordonnees(adresse);
 			
-		
 			//ARCGIS
 			//ex ArcGis request :
 			//http://sampleserver6.arcgisonline.com/ArcGIS/rest/services/Utilities/Geometry/GeometryServer/lengths?sr=4269&polylines=[{"paths":[[[-117,34],[-116,34],[-117,33]],[[-115,44],[-114,43],[-115,43]]]},{"paths":[[[32.49,17.83],[31.96,17.59],[30.87,17.01],[30.11,16.86]]]}]&lengthUnit=9036&calculationType=preserveShape
@@ -80,7 +79,7 @@ public class ServiceVelib {
 					JsonObjectBuilder oneAssert=Json.createObjectBuilder();
 				
 					polylines.add(Json.createObjectBuilder().
-						add("path", "[[["+l.get(0).toString()+","+l.get(1).toString()+"],["+ite.getString("lat")+","+ite.getString("lng")+"]]]").build());
+						add("path", "[[["+coordonnees.get(0).toString()+","+coordonnees.get(1).toString()+"],["+ite.getString("lat")+","+ite.getString("lng")+"]]]").build());
 				}
 			}
 			
@@ -128,31 +127,6 @@ public class ServiceVelib {
 			return null;
 		}
 		
-	}
-	
-	private List<Float> accessOSM(String adresse) throws ParserConfigurationException, SAXException, IOException{
-		//OpenStreetMap partis
-				//ex request :
-				//http://nominatim.openstreetmap.org/search?q=Université+Paul+Sabatier,+Toulouse&format=xml
-				//partie acces
-				String requeteOSM = "http://nominatim.openstreetmap.org/search?q="+adresse.replace(" ","+")+",+Toulouse&format=xml&polygon=1&addressdetails=1";
-				Client clientOSM = ClientBuilder.newClient();
-				WebTarget targetOSM= clientOSM.target(requeteOSM);
-				InputStream refFic=targetOSM.request(MediaType.APPLICATION_XML).get(InputStream.class);
-				
-				//partie parse XML avec DOM
-				DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-				DocumentBuilder db = dbf.newDocumentBuilder();
-				Document doc = db.parse(new DataInputStream(refFic));
-				Element root = doc.getDocumentElement();
-				Element place = (Element)root.getFirstChild();
-				String lat= place.getAttribute("lat");
-				String lng = place.getAttribute("lon");
-				List<Float> l=new ArrayList<Float>();
-				l.add(Float.valueOf("lat"));
-				l.add(Float.valueOf("lon"));
-				return l;
-				
 	}
 	
 	public ArrayList<Station> stationsNonCompletes(String adresse) {
