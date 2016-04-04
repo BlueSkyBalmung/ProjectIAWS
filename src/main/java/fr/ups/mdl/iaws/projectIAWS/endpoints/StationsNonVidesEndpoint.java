@@ -2,7 +2,6 @@ package fr.ups.mdl.iaws.projectIAWS.endpoints;
 
 import fr.ups.mdl.iaws.projectIAWS.ServiceVelib;
 import fr.ups.mdl.iaws.projectIAWS.Station;
-import fr.ups.mdl.iaws.projectIAWS.XmlHelper;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +39,7 @@ public class StationsNonVidesEndpoint {
 	@ResponsePayload
 	public Element handleStationsNonVidesRequest(
 			@XPathParam("/rn:StationsNonVidesRequest/rn:adresse/text()") String adresse)
-			throws Exception {
+			throws Exception, ParserConfigurationException, SAXException, IOException {
 
 		ArrayList<Station> stations = serviceVelib.stationsNonVides(adresse);
 

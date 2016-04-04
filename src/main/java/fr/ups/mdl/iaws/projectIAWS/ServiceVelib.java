@@ -155,19 +155,7 @@ public class ServiceVelib {
 				
 	}
 	
-	public float risqueChausse(String adresse) {
-		return 0;
-	}
-	
 	public ArrayList<Station> stationsNonCompletes(String adresse) {
 		return null;
-	}
-
-	public int tempsTrajetPied(String adresseDepart, String adresseArrivee, String vitesseDeplacement) {
-		return 0;
-	}
-
-	public int tempsTrajetVelo(String adresseDepart, String adresseArrivee, String vitesseDeplacement) {
-		return 0;
 	}
 }
