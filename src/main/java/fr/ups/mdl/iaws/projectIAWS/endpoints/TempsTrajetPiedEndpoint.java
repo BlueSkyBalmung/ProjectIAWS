@@ -1,11 +1,9 @@
 package fr.ups.mdl.iaws.projectIAWS.endpoints;
 
-import fr.ups.mdl.iaws.projectIAWS.ServiceVelib;
-import fr.ups.mdl.iaws.projectIAWS.XmlHelper;
+import fr.ups.mdl.iaws.projectIAWS.ServiceTempsTrajet;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,18 +17,17 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import org.springframework.ws.server.endpoint.annotation.XPathParam;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 @Endpoint
 public class TempsTrajetPiedEndpoint {
-	private ServiceVelib serviceVelib;
+	private ServiceTempsTrajet serviceTempsTrajet;
 
 	private static final String NAMESPACE_URI = "http://tempsTrajetPied/ws";
 
 	@Autowired
-	public TempsTrajetPiedEndpoint(ServiceVelib serviceVelib) {
-		this.serviceVelib = serviceVelib;
+	public TempsTrajetPiedEndpoint(ServiceTempsTrajet serviceTempsTrajet) {
+		this.serviceTempsTrajet = serviceTempsTrajet;
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "TempsTrajetPiedRequest") // nom de l'élément racine
@@ -40,9 +37,9 @@ public class TempsTrajetPiedEndpoint {
 			@XPathParam("/TempsTrajetPiedRequest/rn:adresseDepart/text()") String adresseDepart,
 			@XPathParam("/TempsTrajetPiedRequest/rn:adresseArrivee/text()") String adresseArrivee,
 			@XPathParam("/TempsTrajetPiedRequest/rn:vitesseDeplacement/text()") String vitesseDeplacement)
-			throws Exception {
+			throws Exception, ParserConfigurationException, SAXException, IOException {
 
-		int temps = serviceVelib.tempsTrajetPied(adresseDepart, adresseArrivee, vitesseDeplacement);
+		int temps = serviceTempsTrajet.tempsTrajetPied(adresseDepart, adresseArrivee, Integer.parseInt(vitesseDeplacement));
 
 		// Creation du DOM builder
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

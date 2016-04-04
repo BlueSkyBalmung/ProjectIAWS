@@ -44,8 +44,8 @@ import javax.ws.rs.core.MultivaluedHashMap;
  *
  */
 public class ServiceVelib {
-	private static String cleJCDecaux="039a8fcb1cfb47bcaa20e9ed00f0f07f64bff95e";
-	private static final String API_URI =  "https://api.jcdecaux.com/vls/v1/stations?contract=Toulouse&apiKey="+cleJCDecaux;
+	private static String cleJCDecaux = "039a8fcb1cfb47bcaa20e9ed00f0f07f64bff95e";
+	private static final String API_URI = "https://api.jcdecaux.com/vls/v1/stations?contract=Toulouse&apiKey="+cleJCDecaux;
 	
 	public ArrayList<Station> stationsNonVides(String adresse){
 		try {
@@ -54,9 +54,8 @@ public class ServiceVelib {
 			Client clientJCDecaux = ClientBuilder.newClient();
 			WebTarget targetJCDecaux = clientJCDecaux.target(API_URI);
 		
-			List<Float> l=accessOSM(adresse);
+			List<Float> coordonnees = accessOSM(adresse);
 			
-		
 			//ARCGIS
 			//ex ArcGis request :
 			//http://sampleserver6.arcgisonline.com/ArcGIS/rest/services/Utilities/Geometry/GeometryServer/lengths?sr=4269&polylines=[{"paths":[[[-117,34],[-116,34],[-117,33]],[[-115,44],[-114,43],[-115,43]]]},{"paths":[[[32.49,17.83],[31.96,17.59],[30.87,17.01],[30.11,16.86]]]}]&lengthUnit=9036&calculationType=preserveShape
@@ -79,10 +78,10 @@ public class ServiceVelib {
 					lat=Float.valueOf(ite.getJsonObject("position").getString("lat"));
 					lng=Float.valueOf(ite.getJsonObject("position").getString("lng"));
 					JsonObjectBuilder oneAssert=Json.createObjectBuilder();
-				
+
 					polylines.add(Json.createObjectBuilder().
-						add("path", "[[["+l.get(0).toString()+","+l.get(1).toString()+"],["
-					+ite.getString("lat")+","+ite.getString("lng")+"]]]").build());
+						add("path", "[[["+coordonnees.get(0).toString()+","+coordonnees.get(1).toString()+"],["+ite.getString("lat")+","+ite.getString("lng")+"]]]").build());
+
 				}
 			}
 			
@@ -139,6 +138,7 @@ public class ServiceVelib {
 		
 	}
 	
+
 	private List<Float> accessOSM(String adresse) throws ParserConfigurationException, SAXException, IOException{
 		//OpenStreetMap partis
 				//ex request :
@@ -169,15 +169,8 @@ public class ServiceVelib {
 		return 0;
 	}
 	
+	
 	public ArrayList<Station> stationsNonCompletes(String adresse) {
 		return null;
-	}
-
-	public int tempsTrajetPied(String adresseDepart, String adresseArrivee, String vitesseDeplacement) {
-		return 0;
-	}
-
-	public int tempsTrajetVelo(String adresseDepart, String adresseArrivee, String vitesseDeplacement) {
-		return 0;
 	}
 }

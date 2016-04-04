@@ -1,12 +1,9 @@
 package fr.ups.mdl.iaws.projectIAWS.endpoints;
 
-import fr.ups.mdl.iaws.projectIAWS.ServiceVelib;
-import fr.ups.mdl.iaws.projectIAWS.Station;
-import fr.ups.mdl.iaws.projectIAWS.XmlHelper;
+import fr.ups.mdl.iaws.projectIAWS.ServiceRisqueChaussee;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,19 +17,17 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import org.springframework.ws.server.endpoint.annotation.XPathParam;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 @Endpoint
 public class RisqueChausseeEndpoint {
-	private ServiceVelib serviceVelib;
+	private ServiceRisqueChaussee serviceRisqueChausee;
 
 	private static final String NAMESPACE_URI = "http://risqueChaussee/ws";
 
 	@Autowired
-	public RisqueChausseeEndpoint(ServiceVelib serviceVelib) {
-		this.serviceVelib = serviceVelib;
+	public RisqueChausseeEndpoint(ServiceRisqueChaussee serviceRisqueChausee) {
+		this.serviceRisqueChausee = serviceRisqueChausee;
 	}
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "RisqueChausseeRequest") // nom de l'élément racine
@@ -42,7 +37,7 @@ public class RisqueChausseeEndpoint {
 			@XPathParam("/rn:RisqueChausseeRequest/rn:adresse/text()") String adresse)
 			throws Exception, ParserConfigurationException, SAXException, IOException {
 
-		float risque = serviceVelib.risqueChausse(adresse);
+		float risque = serviceRisqueChausee.risqueChaussee(adresse);
 
 		// Creation du DOM builder
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
