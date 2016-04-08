@@ -10,11 +10,13 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
+import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +31,8 @@ import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
+import javax.json.JsonString;
 import javax.json.JsonValue;
 
 import javax.ws.rs.InternalServerErrorException;
@@ -45,14 +49,14 @@ import javax.ws.rs.core.MultivaluedHashMap;
  */
 public class ServiceVelib {
 	private static String cleJCDecaux = "039a8fcb1cfb47bcaa20e9ed00f0f07f64bff95e";
-	private static final String API_URI = "https://api.jcdecaux.com/vls/v1/stations?contract=Toulouse&apiKey="+cleJCDecaux;
+	private static final String API_URI = "https://api.jcdecaux.com/vls/v1/stations?contract=Toulouse&apiKey=";
 	
 	public ArrayList<Station> stationsNonVides(String adresse){
 		try {
 		
 			//JCDECAUX 
 			Client clientJCDecaux = ClientBuilder.newClient();
-			WebTarget targetJCDecaux = clientJCDecaux.target(API_URI);
+			WebTarget targetJCDecaux = clientJCDecaux.target(API_URI+cleJCDecaux+"&format=XML");
 		
 			List<Float> coordonnees = accessOSM(adresse);
 			
@@ -65,9 +69,16 @@ public class ServiceVelib {
 			MultivaluedMap<String, String> formData = new MultivaluedHashMap<String, String>();
 			formData.add("sr", "4269");
 	
-			
-			JsonArray resultJCDecaux = targetJCDecaux.request(MediaType.APPLICATION_JSON).get(JsonArray.class);
+			String resultJCDecauxS = targetJCDecaux.request(MediaType.APPLICATION_JSON).get(String.class);
+			JsonReader result=Json.createReader(new ByteArrayInputStream(resultJCDecauxS.getBytes()));
+
+			/*JsonObjectBuilder resultJCDecauxBuild =Json.createObjectBuilder();
+			JsonObject resultJCDecauxObject=resultJCDecauxBuild.add("tab", resultJCDecauxS).build();*/
+			//resultJCDecauxBuild.;
+			JsonArray resultJCDecaux=result.readArray();
+
 			JsonArray closer;
+
 			float lat, lng;
 			JsonArrayBuilder polylines = Json.createArrayBuilder();
 			for(int i=0;i<resultJCDecaux.size();i++){
@@ -75,22 +86,23 @@ public class ServiceVelib {
 				//available_bikes
 				if (ite.getInt("available_bikes")>0){
 					
-					lat=Float.valueOf(ite.getJsonObject("position").getString("lat"));
-					lng=Float.valueOf(ite.getJsonObject("position").getString("lng"));
+					lat=ite.getJsonObject("position").getJsonNumber("lat").bigDecimalValue().floatValue();
+					lng=ite.getJsonObject("position").getJsonNumber("lng").bigDecimalValue().floatValue();
 					JsonObjectBuilder oneAssert=Json.createObjectBuilder();
 
 					polylines.add(Json.createObjectBuilder().
-						add("path", "[[["+coordonnees.get(0).toString()+","+coordonnees.get(1).toString()+"],["+ite.getString("lat")+","+ite.getString("lng")+"]]]").build());
+						add("path", "[[["+coordonnees.get(0).toString()+","+coordonnees.get(1).toString()+"],["+String.valueOf(lat)+","+String.valueOf(lat)+"]]]").build());
 
 				}
 			}
 			
-			formData.add("polylines", polylines.toString());
+			formData.add("polylines", polylines.build().toString());
 		    formData.add("lengthUnit", "9036");
 		    formData.add("calculationType", "preserveShape");
-		    JsonObject responseArcGIS = arcGIStarget.request(MediaType.APPLICATION_JSON)
-		    		.post(Entity.form(formData),JsonObject.class);
-		   
+		    String responseArcGISString = arcGIStarget.request(MediaType.APPLICATION_JSON)
+		    		.post(Entity.form(formData),String.class);
+		    JsonReader readerArcGIS=Json.createReader(new ByteArrayInputStream(responseArcGISString.getBytes()));
+		    JsonObject responseArcGIS = readerArcGIS.readObject();
 		    //A Debattre
 		    //Explication : je recois un string de la forme [valFloat1,valFloat2,...] que je dois transformer en tableau de float pour le parcourir
 		    float[][] answer=new float[3][2];
@@ -155,12 +167,13 @@ public class ServiceVelib {
 				DocumentBuilder db = dbf.newDocumentBuilder();
 				Document doc = db.parse(new DataInputStream(refFic));
 				Element root = doc.getDocumentElement();
-				Element place = (Element)root.getFirstChild();
-				String lat= place.getAttribute("lat");
-				String lng = place.getAttribute("lon");
+				NodeList nList = root.getElementsByTagName("place");
+				Element place = (Element)nList.item(0);
+				Float lat= Float.parseFloat(place.getAttribute("lat"));
+				Float lng = Float.parseFloat(place.getAttribute("lon"));
 				List<Float> coord=new ArrayList<Float>();
-				coord.add(Float.valueOf("lat"));
-				coord.add(Float.valueOf("lon"));
+				coord.add(lat);
+				coord.add(lng);
 				return coord;
 				
 	}
